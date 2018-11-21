@@ -23,7 +23,7 @@ func main() {
 		body, _ := ioutil.ReadAll(job.Response.Body)
 		log.Println(string(body))
 		for i := 0; i < 10; i++ {
-			seed, _ := orcworker.NewSeed("https://blog.fly123.tk/echo.php?hello="+strconv.Itoa(i), "get", nil ,nil)
+			seed, _ := orcworker.NewSeed("https://blog.fly123.tk/echo.php?hello="+strconv.Itoa(i), "GET", nil ,nil)
 			seeds = append(seeds, seed)
 		}
 		return

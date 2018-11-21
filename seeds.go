@@ -6,6 +6,7 @@ import (
 	"errors"
 	"crypto/sha256"
 	"bytes"
+	"strings"
 )
 
 var ERR_SEEDS_EMPTY = errors.New("Empty Seed ")
@@ -21,7 +22,7 @@ type Seed struct {
 func NewSeed(rawURL string, method string, body url.Values, header http.Header) (*Seed, error) {
 	seed := &Seed{}
 	seed.URL = rawURL
-	seed.Method = method
+	seed.Method = strings.ToUpper(method)
 	seed.Body = body
 	seed.Header = header
 	seed.Deep = 0

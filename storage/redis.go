@@ -37,10 +37,14 @@ func (redisStorage *RedisStorage) EnQueue(seed *orcworker.Seed) error {
 	if err != nil {
 		return err
 	}
-	pipe := redisStorage.conn.Pipeline()
-	pipe.SAdd(SET_KEY, hash)
-	pipe.LPush(QUEUE_KEY, string(b))
-	_, err = pipe.Exec()
+	i ,err := redisStorage.conn.SAdd(SET_KEY, hash).Result()
+	if err != nil {
+		return err
+	}
+	if i != 1 { // remove duplicate
+		return nil
+	}
+	err = redisStorage.conn.LPush(QUEUE_KEY, string(b)).Err()
 	return err
 }
 
