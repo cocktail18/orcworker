@@ -4,6 +4,6 @@ import (
 	"net/http"
 )
 
-type Fetcher interface {
+type Downloader interface {
 	Fetch(seed *Seed) (*http.Response, error)
 }

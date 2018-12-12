@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/cocktail18/orcworker"
-	"github.com/cocktail18/orcworker/fetcher"
+	"github.com/cocktail18/orcworker/downloader"
 	"github.com/cocktail18/orcworker/storage"
 	"gopkg.in/bsm/ratelimit.v2"
 	"io/ioutil"
@@ -14,11 +14,11 @@ import (
 )
 
 func main() {
-	fetch := fetcher.NewSimpleFetcher()
+	download := downloader.NewSimpleDownloader()
 	seed, _ := orcworker.NewSeed("https://www.mzitu.com/", "GET", nil, nil)
 	st := storage.NewMemoryStorage()
 	rate := ratelimit.New(100, time.Second)
-	scheduler, _ := orcworker.NewScheduler(st, fetch, -1, 100, rate)
+	scheduler, _ := orcworker.NewScheduler(st, download, -1, 100, rate)
 	scheduler.AddProcessor(func(job *orcworker.Job) (seeds []*orcworker.Seed, err error) {
 		doc, err := goquery.NewDocumentFromReader(job.Response.Body)
 		job.Result["doc"] = doc

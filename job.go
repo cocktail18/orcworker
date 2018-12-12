@@ -5,17 +5,17 @@ import (
 )
 
 type Job struct {
-	fetcher   Fetcher
-	seed      *Seed
-	scheduler *Scheduler
-	Response  *http.Response
-	Result    map[string]interface{}
-	done      chan error
+	downloader Downloader
+	seed       *Seed
+	scheduler  *Scheduler
+	Response   *http.Response
+	Result     map[string]interface{}
+	done       chan error
 }
 
 func NewJob(scheduler *Scheduler, seed *Seed) *Job {
 	job := &Job{}
-	job.fetcher = scheduler.fetcher
+	job.downloader = scheduler.downloader
 	job.seed = seed
 	job.scheduler = scheduler
 	job.Result = make(map[string]interface{})
@@ -35,7 +35,7 @@ func (job *Job) Run() error {
 
 func (job *Job) run() {
 	var err error
-	job.Response, err = job.fetcher.Fetch(job.seed)
+	job.Response, err = job.downloader.Fetch(job.seed)
 	if err != nil {
 		goto DONE
 	}

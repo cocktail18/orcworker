@@ -14,7 +14,7 @@ import (
 
 type Scheduler struct {
 	storage       Storage
-	fetcher       Fetcher
+	downloader    Downloader
 	processors    []Processor
 	failJob       int64
 	successJob    int64
@@ -29,9 +29,9 @@ type Scheduler struct {
 	runningChan   chan struct{}
 }
 
-func NewScheduler(storage Storage, fetcher Fetcher, maxDeep, maxRunningJob int, rate *ratelimit.RateLimiter) (*Scheduler, error) {
+func NewScheduler(storage Storage, downloader Downloader, maxDeep, maxRunningJob int, rate *ratelimit.RateLimiter) (*Scheduler, error) {
 	scheduler := &Scheduler{}
-	scheduler.fetcher = fetcher
+	scheduler.downloader = downloader
 	scheduler.storage = storage
 	scheduler.maxDeep = maxDeep
 	if maxRunningJob <= 0 {
